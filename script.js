@@ -1,6 +1,7 @@
 import { creatures } from "./data.js";
+
 let teamCount = 0;
-const MAX_TEAM = 6; 
+const MAX_TEAM = 6;
 function Afficher(Array) {
     const section = document.getElementById("grid");
     Array.forEach((pokemon) => {
@@ -28,7 +29,7 @@ const lesBoutons = document.querySelectorAll("#filters button");
 const cards = document.querySelectorAll('.pokemon-card');
 
 
-function AfficherDétails(pokemon){
+function AfficherDétails(pokemon) {
     const Section = document.getElementById("detail");
     Section.innerHTML = `
     <div class="flex items-center justify-between">
@@ -119,13 +120,15 @@ searchInput.addEventListener('input', (e) => {
 });
 
 searchInput.addEventListener("input", (e) => {
-  const texte = e.target.value.toLowerCase().trim();
-  const cartesTrouvees = creatures.filter(c => c.name.toLowerCase().includes(texte));
-  renderGrid(cartesTrouvees);})
+    const texte = e.target.value.toLowerCase().trim();
+    const cartesTrouvees = creatures.filter(c => c.name.toLowerCase().includes(texte));
+    renderGrid(cartesTrouvees);
+})
 
 lesBoutons.forEach(bouton => {
-  bouton.addEventListener("click", (e) => {
-  const typeChoisi = e.target.textContent.trim();
-  const cartesFiltrees=creatures.filter(c =>c.type.toUpperCase()===typeChoisi);
-    renderGrid(cartesFiltrees);
-    })})
+    bouton.addEventListener("click", (e) => {
+        const typeChoisi = e.target.textContent.trim();
+        const cartesFiltrees = creatures.filter(c => c.type.toUpperCase() === typeChoisi);
+        renderGrid(cartesFiltrees);
+    })
+})
