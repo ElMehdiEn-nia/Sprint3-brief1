@@ -1,5 +1,5 @@
-import { creatures } from "./data.js";
-
+import { creatures , getData } from "./data.js";
+const filterBtns = document.querySelectorAll(".filter-btn");
 let teamCount = 0;
 const MAX_TEAM = 6;
 function Afficher(Array) {
@@ -23,7 +23,87 @@ function Afficher(Array) {
 }
 Afficher(creatures);
 
-const teamCounterEl = document.getElementById('team-counter');
+const init = async () => {
+
+    await getData();
+
+    Afficher(creatures);
+
+    console.log(creatures);
+
+};
+
+init();
+let team = [];
+const teamCounterEl = document.getElementById("team-count");
+
+function addToTeam(pokemonId) {
+
+   const pokemon = creatures.find(p => Number(p.id) === Number(pokemonId));
+
+    if (!pokemon) return;
+
+    if (team.some(p => p.id === pokemonId)) {
+        alert("Ce Pokémon est déjà dans votre équipe !");
+        return;
+    }
+
+    if (team.length >= MAX_TEAM) {
+        alert("Votre équipe est complète !");
+        return;
+    }
+
+    team.push(pokemon);
+
+    teamCounterEl.textContent = team.length;
+
+    console.log("Mon équipe :", team);
+}
+function displayTeam() {
+    const teamList = document.getElementById("team-list");
+
+    teamList.innerHTML = "";
+
+    if (team.length === 0) {
+        teamList.innerHTML = `
+            <p class="text-gray-500 text-sm">
+                Votre équipe est vide.
+            </p>
+        `;
+        return;
+    }
+
+    team.forEach(pokemon => {
+        teamList.innerHTML += `
+            <div class="flex items-center gap-3 border rounded-xl p-2">
+                <img src="${pokemon.image}"
+                     alt="${pokemon.name}"
+                     class="w-16 h-16">
+
+                <div>
+                    <h3 class="font-bold">${pokemon.name}</h3>
+                    <p class="text-sm text-gray-500">${pokemon.type}</p>
+                </div>
+            </div>
+        `;
+    });
+}
+displayTeam();
+const grid = document.getElementById("grid");
+
+grid.addEventListener("click", (event) => {
+
+    if (event.target.classList.contains("add-team-btn")) {
+
+        const card = event.target.closest(".pokemon-card");
+
+        const pokemonId = Number(card.dataset.id);
+
+        addToTeam(pokemonId);
+    }
+
+});
+
 const searchInput = document.getElementById('search');
 const lesBoutons = document.querySelectorAll("#filters button");
 const cards = document.querySelectorAll('.pokemon-card');
@@ -67,21 +147,7 @@ cards.forEach((card) => {
 
 
 
-document.querySelectorAll('.add-team-btn').forEach(button => {
-    button.addEventListener('click', () => {
-        AfficherDétails(creatures);
-        if (teamCount < MAX_TEAM) {
-            teamCount++;
-            teamCounterEl.textContent = teamCount;
-            button.textContent = 'Le Pokemon est ajouté !';
-            button.classList.remove('bg-gray-900', 'hover:bg-gray-800');
-            button.classList.add('bg-green-600', 'cursor-not-allowed');
-            button.disabled = true;
-        } else {
-            alert("Votre équipe est complète (6 créatures max) !");
-        }
-    });
-});
+
 
 filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -104,6 +170,7 @@ filterBtns.forEach(btn => {
         });
     });
 });
+
 
 
 searchInput.addEventListener('input', (e) => {

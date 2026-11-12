@@ -55,6 +55,7 @@
   <button class="filter-btn  text-yellow-400 px-4 py-2 rounded-full font-medium hover:bg-black " data-type="Poison">Poison</button>
   <button class="filter-btn  text-yellow-400 px-4 py-2 rounded-full font-medium hover:bg-black " data-type="Combat">Combat</button>
 </div>
+<br>
 
 
     </section>
@@ -73,14 +74,37 @@
         </section>
 
         <!-- ===================== MON ÉQUIPE (INCOMPLÈTE) ===================== -->
-        <section id="team" aria-label="Mon équipe" class="rounded-card bg-white p-6">
-          <h2 class="font-display text-2xl font-extrabold">Mon équipe</h2>
-          <!-- TODO (Partie 1) : terminez cette section en suivant la maquette :
-               compteur x/6, 6 emplacements (vides ou remplis), message de règles. -->
-        </section>
+       
+<section id="team" aria-label="Mon équipe" class="rounded-card bg-white p-6">
+
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="font-display text-2xl font-extrabold">
+            Mon équipe
+        </h2>
+
+        <span class="font-bold">
+            <span id="team-count">0</span>/6
+        </span>
+    </div>
+
+    <!-- Pokémon ajoutés -->
+    <div id="team-list" class="flex flex-col gap-3">
+
+        <p id="empty-team" class="text-gray-500 text-sm">
+            Votre équipe est vide. Ajoutez des Pokémon !
+        </p>
+
+    </div>
+
+    <p class="mt-4 text-sm text-gray-500">
+        Votre équipe peut contenir jusqu'à 6 Pokémon.
+    </p>
+
+</section>
 
       </aside>
     </div>
+    <button id="show more" class="filter-btn hover:bg-blue-700 text-black" >afficher plus</button>
 
     <!-- ===================== FORMULAIRE DE CRÉATION ===================== -->
     <section id="create" aria-label="Nouvelle créature" class="flex flex-col gap-6 rounded-card bg-white p-8">
