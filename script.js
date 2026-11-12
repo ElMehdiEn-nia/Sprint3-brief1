@@ -1,14 +1,17 @@
-import { creatures , getData } from "./data.js";
+import { creatures , getData } from "./API.js";
 const filterBtns = document.querySelectorAll(".filter-btn");
 let teamCount = 0;
+let i = 0
+let add_20 =20
 const MAX_TEAM = 6;
 function Afficher(Array) {
     const section = document.getElementById("grid");
+    section.innerHTML= ""
     Array.forEach((pokemon) => {
+        
         section.innerHTML += `
         <article data-id="${pokemon.id}" class="pokemon-card flex flex-col gap-3 rounded-card bg-white p-3 pb-4">
           <div class="relative flex h-36 items-center justify-center rounded-xl bg-brand-light">
-            
             <span class="absolute left-3 top-2 font-mono text-sm">${pokemon.id}</span>
             <img class="col-span-1 " src="${pokemon.image}"/>
           </div>
@@ -21,13 +24,26 @@ function Afficher(Array) {
         </article>`;
     });
 }
-Afficher(creatures);
 
+// Afficher(creatures);
+const more = document.getElementById("showMore")
+more.addEventListener("click", async()=>{
+    i=add_20
+    
+    let skip = add_20
+    let limit = skip-20
+    let cards =await getData(limit,skip)
+    console.log(creatures)
+
+    creatures.push(cards)
+add_20+=20
+
+  Afficher(creatures)
+})
 const init = async () => {
 
-    await getData();
 
-    Afficher(creatures);
+  
 
     console.log(creatures);
 
