@@ -1,3 +1,4 @@
+
 export const creatures = [];
 
 export const getData = async (limit, skip) => {
@@ -6,12 +7,15 @@ export const getData = async (limit, skip) => {
             `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${skip}`
         );
 
+        if (!response.ok) {
+            throw new Error("API request failed");
+        }
+
         const data = await response.json();
 
         for (const pokemon of data.results) {
             const res = await fetch(pokemon.url);
             const details = await res.json();
-            
 
             creatures.push({
                 id: details.id,
@@ -27,10 +31,11 @@ export const getData = async (limit, skip) => {
                 description: `Pokemon ${details.name}`
             });
         }
+
+        return data.results;
+
     } catch (error) {
         console.log("ERROR:", error);
+        throw error;
     }
 };
-await getData(20,0)
-
-

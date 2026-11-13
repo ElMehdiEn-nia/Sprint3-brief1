@@ -1,61 +1,89 @@
-import { creatures , getData } from "./API.js";
-const filterBtns = document.querySelectorAll(".filter-btn");
-let teamCount = 0;
-let i = 0
-let add_20 =20
-const MAX_TEAM = 6;
+
+import { creatures, getData } from "./API.js";
+
+const more = document.getElementById("showMore");
+
+let add_20 = 0;
+const LIMIT = 20;
+
 function Afficher(Array) {
     const section = document.getElementById("grid");
-    section.innerHTML= ""
+
+    section.innerHTML = "";
+
     Array.forEach((pokemon) => {
-        
         section.innerHTML += `
-        <article data-id="${pokemon.id}" class="pokemon-card flex flex-col gap-3 rounded-card bg-white p-3 pb-4">
-          <div class="relative flex h-36 items-center justify-center rounded-xl bg-brand-light">
-            <span class="absolute left-3 top-2 font-mono text-sm">${pokemon.id}</span>
-            <img class="col-span-1 " src="${pokemon.image}"/>
-          </div>
-          <div class="flex items-center justify-between gap-2">
-            <h3 class="font-display text-xl font-semibold">${pokemon.name}</h3>
-            <span class="rounded-full bg-brand-light px-3 py-1 text-sm font-bold text-ink">${pokemon.type}</span>
-          </div>
-          <p class="text-sm text-black">${pokemon.level} · Total 470</p>
-          <button type="button" class="btn-outline add-team-btn">Ajouter à l'équipe</button>
+        <article data-id="${pokemon.id}"
+            class="pokemon-card flex flex-col gap-3 rounded-card bg-white p-3 pb-4">
+
+            <div class="relative flex h-36 items-center justify-center rounded-xl bg-brand-light">
+                <span class="absolute left-3 top-2 font-mono text-sm">
+                    ${pokemon.id}
+                </span>
+
+                <img src="${pokemon.image}" alt="${pokemon.name}"/>
+            </div>
+
+            <div class="flex items-center justify-between gap-2">
+                <h3 class="font-display text-xl font-semibold">
+                    ${pokemon.name}
+                </h3>
+
+                <span class="rounded-full bg-brand-light px-3 py-1 text-sm font-bold text-ink">
+                    ${pokemon.type}
+                </span>
+            </div>
+
+            <p class="text-sm text-black">
+                ${pokemon.level} · Total 470
+            </p>
+
+            <button type="button" class="btn-outline add-team-btn">
+                Ajouter à l'équipe
+            </button>
         </article>`;
     });
 }
 
-// Afficher(creatures);
-const more = document.getElementById("showMore")
-more.addEventListener("click", async()=>{
-    i=add_20
-    
-    let skip = add_20
-    let limit = skip-20
-    let cards =await getData(limit,skip)
-    console.log(creatures)
-
-    creatures.push(cards)
-add_20+=20
-
-  Afficher(creatures)
-})
-const init = async () => {
 
 
-  
+async function loadPokemon() {
+    more.disabled = true;
+    more.textContent = "Chargement...";
 
-    console.log(creatures);
+    try {
+        await getData(LIMIT, add_20);
 
-};
 
-init();
+        add_20 += LIMIT;
+
+
+        Afficher(creatures);
+
+        console.log("Total Pokémon:", creatures.length);
+
+    } catch (error) {
+        console.error(error);
+    } finally {
+        more.disabled = false;
+        more.textContent = "Voir plus";
+    }
+}
+
+
+
+loadPokemon();
+
+
+
+more.addEventListener("click", loadPokemon);
+
 let team = [];
 const teamCounterEl = document.getElementById("team-count");
 
 function addToTeam(pokemonId) {
 
-   const pokemon = creatures.find(p => Number(p.id) === Number(pokemonId));
+    const pokemon = creatures.find(p => Number(p.id) === Number(pokemonId));
 
     if (!pokemon) return;
 
