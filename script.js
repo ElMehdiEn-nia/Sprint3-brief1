@@ -10,7 +10,7 @@ function Afficher(Array) {
     const section = document.getElementById("grid");
 
     section.innerHTML = "";
-
+    console.log("Cards to display:", Array.length);
     Array.forEach((pokemon) => {
         section.innerHTML += `
         <article data-id="${pokemon.id}"
@@ -73,6 +73,31 @@ async function loadPokemon() {
 
 
 loadPokemon();
+
+
+const filterBtns = document.querySelectorAll(".filter-btn");
+
+filterBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+
+        const type = btn.textContent.trim().toLowerCase();
+
+        let filteredCreatures;
+
+        if (type === "tous") {
+            filteredCreatures = creatures;
+        } else {
+            filteredCreatures = creatures.filter((creature) => {
+                return creature.type.toLowerCase() === type;
+            });
+        }
+
+        console.log("Filtered:", filteredCreatures.length);
+        console.log(filteredCreatures);
+
+        Afficher(filteredCreatures);
+    });
+});
 
 
 
